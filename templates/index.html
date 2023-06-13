@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flasktice - Home</title>
+</head>
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .list-item {
+        margin-left: 20px;
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    .list-item,
+    p,
+    h1 {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    p {
+        font-size: 24px;
+    }
+
+    .vignette {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+</style>
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'warning' if category == 'warning' else 'success' if category == 'success' else
+                                       'info' if category == 'info' }} alert-dismissable fade show">
+                <strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h1>Personal Project by Alejandro Carrillo</h1>
+    <p>The goal of this project is to learn (in the best way), technologies such as:</p>
+
+    <div class="list-item">
+        <span class="vignette"></span>
+        Python
+        <div class="list-item">
+            <span class="vignette"></span>
+            Dataclasses <br>
+            <span class="vignette"></span>
+            Environmental Variables <br>
+            <span class="vignette"></span>
+            Loops <br>
+            <span class="vignette"></span>
+            Exceptions <br>
+            <span class="vignette"></span>
+            Functions <br>
+        </div>
+        <span class="vignette"></span>
+        Flask
+        <div class="list-item">
+            <span class="vignette"></span>
+            Jinja Templates <br>
+            <span class="vignette"></span>
+            Jinja Conditions <br>
+            <span class="vignette"></span>
+            Jinja Loops <br>
+            <span class="vignette"></span>
+            Jinja Routes <br>
+            <span class="vignette"></span>
+            WTForms <br>
+            <span class="vignette"></span>
+            Sessions <br>
+            <span class="vignette"></span>
+            Flash Messages <br>
+            <span class="vignette"></span>
+            Kwargs and args <br>
+        </div>
+        <span class="vignette"></span>
+        Datatables
+        <div class="list-item">
+            <span class="vignette"></span>
+            Data from Database <br>
+            <span class="vignette"></span>
+            Data from API <br>
+            <span class="vignette"></span>
+            Touch Events <br>
+            <span class="vignette"></span>
+            Buttons (PDF, EXCEL, Clipboard) <br>
+            <span class="vignette"></span>
+            DOM variations <br>
+            <span class="vignette"></span>
+            Styling <br>
+        </div>
+        <span class="vignette"></span>
+        SQLite 3
+        <div class="list-item">
+            <span class="vignette"></span>
+            CRUD in local database <br>
+        </div>
+        <span class="vignette"></span>
+        JQuery
+        <div class="list-item">
+            <span class="vignette"></span>
+            AJAX calls
+        </div>
+        <span class="vignette"></span>
+        JavaScript
+        <div class="list-item">
+            <span class="vignette"></span>
+            Loops <br>
+            <span class="vignette"></span>
+            API Fetching <br>
+            <span class="vignette"></span>
+            DOM <br>
+            <span class="vignette"></span>
+            Functions <br>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

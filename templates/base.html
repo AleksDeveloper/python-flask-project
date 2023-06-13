@@ -1,0 +1,69 @@
+<style type="text/css">
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(2, 11, 75);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        left: 0%;
+        right: 0%;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a.title {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 18px;
+    }
+
+    li a:hover {
+        background-color: rgb(0, 2, 15);
+    }
+
+    body{
+        margin-top: 60px !important;
+    }
+
+    .active{
+        background-color: rgb(17, 28, 125);
+    }
+
+</style>
+
+<div>
+    <ul>
+    <li><a class="title" href="/">Flasktice</a></li>
+    <li><a href="/table1">Table 1</a></li>
+    <li><a href="/table2">Table 2</a></li>
+    <li><a href="/table3">Table 3</a></li>
+    {% if current_user.is_anonymous %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li> | </li>
+        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+    {% else %}
+        <li><a>{{ current_user.name }}</a></li>
+        <li> | </li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    {% endif %}
+</ul>
+</div>
+
+
+
+
+
+{% block content %}{% endblock %}

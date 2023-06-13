@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"/>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="./static/main2.js"></script>
+    <title>Table 3 DB</title>
+</head>
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- {% for message in get_flashed_messages() %}
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+{% endfor %} -->
+
+{% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'warning' if category == 'warning' else 'success' if category == 'success' else
+                                       'info' if category == 'info' }} alert-dismissable fade show">
+                <strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<body style="padding:20px">
+    <table id="tableUsers" class="stripe">
+        <thead>
+            <h1>This is Table Users</h1>
+            <button onclick="displayModal('add', '')">Add registry</button>
+            <tr>
+                {% for header in headers %}
+                {% for cell in header %}
+                <th>{{ cell }}</th>
+                {% endfor %}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr id={{ row[0] }}>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Deletion -->
+    <div class="modal fade" id="ModalModify" tabindex="-1" role="dialog"
+        aria-labelledby="ModalModifyTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal_body">
+                        <form action="{{ url_for('deletionWTForms') }}" method="POST">
+                            {{ form2.id(size=30, class="form-control", style="width:300px", id="formid", style="visibility: hidden; position: absolute;") }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {{ form2.submit(size=30, class="btn btn-danger", id="submitDeleteForm", onclick="deleteRegistry()") }}
+                    </form>
+                    <button type="button" class="btn btn-primary" onclick="displayModal('update', 'data')">Edit Registry</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Add -->
+    <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog"
+        aria-labelledby="ModalAddTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal_body">
+                        <form action="{{ url_for('addrec') }}" method="POST">
+                            <p>
+                                {{ form.user.label }} <br>
+                                {{ form.user(size=30, class="form-control", style="width:300px") }}
+                            </p>
+                            <p>
+                                {{ form.password.label }} <br>
+                                {{ form.password(size=30, class="form-control", style="width:300px") }}
+                            </p>
+                            <p>
+                                {{ form.worker.label }} <br>
+                                {{ form.worker(size=30, class="form-check-input") }}
+                            </p>
+                            <p>
+                                {{ form.student.label }} <br>
+                                {{ form.student(size=30, class="form-check-input") }}
+                            </p>
+                            <p>
+                                {{ form.incomes.label }} <br>
+                                {{ form.incomes(size=30, class="form-control", style="width:300px") }}
+                            </p>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {{ form.submit(size=30, class="btn btn-primary", id="submitAddForm") }}
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal Update -->
+        <div class="modal fade" id="ModalUpdate" tabindex="-1" role="dialog"
+        aria-labelledby="ModalUpdateTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal_body">
+                        <form action="{{ url_for('update') }}" method="POST">
+                            <p>
+                                {{ form3.id.label }} <br>
+                                {{ form3.id(id="formid2", size=30, class="form-control", style="width:60px; pointer-events:none;") }}
+                            </p>
+                            <p>
+                                {{ form3.user.label }} <br>
+                                {{ form3.user(id="formuser2", size=30, class="form-control", style="width:300px") }}
+                            </p>
+                            <p>
+                                {{ form3.password.label }} <br>
+                                {{ form3.password(id="formpassword2", size=30, class="form-control", style="width:300px") }}
+                            </p>
+                            <p>
+                                {{ form3.worker.label }} <br>
+                                {{ form3.worker(id="formworker2", size=30, class="form-check-input") }}
+                            </p>
+                            <p>
+                                {{ form3.student.label }} <br>
+                                {{ form3.student(id="formstudent2", size=30, class="form-check-input") }}
+                            </p>
+                            <p>
+                                {{ form3.incomes.label }} <br>
+                                {{ form3.incomes(id="formincomes2", size=30, class="form-control", style="width:300px") }}
+                            </p>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {{ form3.submit(size=30, class="btn btn-primary", id="submitUpdateForm", onclick="functionupdate()") }}
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}
