@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+    integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script src="./static/main3.js"></script>
+    <title>Table 4 - Create your Datatable</title>
+</head>
+{% extends "base.html" %}
+{% block content %}
+
+<body style="padding:10px">
+    <p id="url" style="visibility: hidden; position: absolute;">{{ url }}</p>
+    <p id="headers" style="visibility: hidden; position: absolute;">{{ headers }}</p>
+    <p id="columns" style="visibility: hidden; position: absolute;">{{ columns }}</p>
+    <p id="pdf" style="visibility: hidden; position: absolute;">{{ pdf }}</p>
+    <p id="excel" style="visibility: hidden; position: absolute;">{{ excel }}</p>
+    <p id="copy" style="visibility: hidden; position: absolute;">{{ copy }}</p>
+
+    <div class="container" style="display:flex; justify-content: flex-start; align-items: flex-start; margin: 0;">
+        <div class="left-content" style="width: 60%">
+            <form action="{{ url_for('table4update') }}" method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.url.label (class="form-label") }}
+                {{ form.url(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetURL) }}
+                {{ form.headers.label (class="form-label") }}
+                {{ form.headers(id="form-APIKey", class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;") }}
+                {{ form.columns.label (class="form-label") }}
+                {{ form.columns(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetColumns) }}
+                {{ form.pdf.label (class="form-label") }}
+                {{ form.pdf(class="form-check-input", style="display:inline-block") }}
+                {{ form.excel.label (class="form-label") }}
+                {{ form.excel(class="form-check-input", style="display:inline-block") }}
+                {{ form.copy.label (class="form-label") }}
+                {{ form.copy(class="form-check-input", style="display:inline-block") }}
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+            <button class="btn btn-secondary" style="display:inline-block" onclick="showAPIKey()">Show API KEY</button>
+            <button class="btn btn-secondary" style="display:inline-block" onclick="saveAPIKey()">Save API KEY</button>
+        </div>
+        <div class="right-content" style="width: 40%;">
+            <form action="{{ url_for('table4update') }}" method="POST">
+                {{ formPreset.preset.label }}
+                {{ formPreset.preset(class="form-control") }}
+                {{ formPreset.submit(class="btn btn-primary") }}
+            </form>
+        </div>
+    </div>
+
+    <table id="tableCustom" class="display">
+        <thead>
+            <h1>Custom Table</h1>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>
+{% endblock %}

@@ -1,5 +1,14 @@
 $(document).ready(function () {
-    var table = $('#tableUsers').DataTable();
+    var table = $('#tableUsers').DataTable({
+        dom: 'Blfrtip',
+        buttons: [
+            'copy', 'excel', {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            }
+        ]
+    });
 
     $('#tableUsers tbody').on('click', 'tr', function () {
         var data = table.row(this).data();

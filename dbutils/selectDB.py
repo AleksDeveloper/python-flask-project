@@ -9,7 +9,7 @@ connectionDB = sqlite3.connect("db1.db")
 response = connectionDB.cursor()
 #response.execute("SELECT * FROM users2")
 #response.execute("SELECT user, email name FROM users2 WHERE user = 'alejadrodjc'")
-response.execute("SELECT * FROM users2")
+response.execute("SELECT * FROM presets")
 #print("THE RESPONSE AS NORMAL IS: ", response.fetchall()[0][1])
 
 
