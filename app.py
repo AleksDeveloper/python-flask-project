@@ -2,7 +2,7 @@ from flask import session, Flask, redirect, render_template, request, flash, url
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from dbutils import dbUtils
 from dataclasses import dataclass, fields
-from forms.forms import InsertForm, LoginForm, SignUpForm, DeleteForm, UpdateForm, SearchForm
+from forms.forms import CreateTableForm, InsertForm, LoginForm, PresetTables, SignUpForm, DeleteForm, UpdateForm, SearchForm
 from model import User, getUser, users, getUser2, createFromDB
 from werkzeug.urls import url_parse
 import sqlite3
@@ -11,6 +11,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'alejandrodjc'
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
+login_manager.login_message = "You need to be logged in to view this page, please log in."
+login_manager.login_message_category = "warning"
 
 @app.route("/")
 def home():
@@ -41,7 +43,7 @@ def login():
                 next_page = request.args.get('next')
                 if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('home')
-                flash("Usuario " + str(form.user.data) + "logueado con éxito", "success")
+                flash("Usuario " + str(form.user.data) + " logueado con éxito", "success")
                 return redirect(next_page)
             else:
                 flash("La contraseña para el usuario " + str(form.user.data) + " es incorrecta.", "warning")
@@ -123,6 +125,7 @@ def table():
     return render_template('table.html', form=form, model=model, year=year, limit=limit)
 
 @app.route("/table2")
+@login_required
 def table2():
     form = InsertForm()
     form2 = DeleteForm()
@@ -254,5 +257,67 @@ def table3update():
     #return redirect(url_for('table3', make=make, model=model, year=year, cylinders=cylinders, fuel_gas=fuel_gas, fuel_diesel=fuel_diesel, fuel_electricity=fuel_electricity, limit=limit))
     return table3(make=make, model=model, year=year, cylinders=cylinders, fuel_type=fuel_type, drive=drive, limit=limit)
 
+@app.route('/table4')
+def table4(**kwargs):
+    form = CreateTableForm()
+    formPreset = PresetTables()
 
+    print("\nTABLE4:", kwargs.get('url'), kwargs.get('headers'), kwargs.get('columns'), kwargs.get('pdf'), kwargs.get('excel'), kwargs.get('copy'))
 
+    url = kwargs.get('url')
+    headers = kwargs.get('headers')
+    if kwargs.get('columns') is None:
+        columns = [""]
+    else:
+        columns = kwargs.get('columns')
+    pdf = kwargs.get('pdf')
+    excel = kwargs.get('excel')
+    copy = kwargs.get('copy')
+    if kwargs.get('presetURL') is not None and kwargs.get('presetColumns') is not None:
+        presetURL = kwargs.get('presetURL')
+        presetColumns = kwargs.get('presetColumns')
+    else:
+        presetURL = ""
+        presetColumns = ""
+    if kwargs.get('tableTitle') is not None:
+        tableTitle = kwargs.get('tableTitle')
+    else:
+        tableTitle = "Custom Table"
+
+    return render_template('table4.html', form=form, formPreset=formPreset, url=url, headers=headers, columns=columns, pdf=pdf, excel=excel, 
+                           copy=copy, presetColumns=presetColumns, presetURL=presetURL, tableTitle=tableTitle)
+
+@app.route('/table4update', methods=["POST"])
+def table4update():
+    form = CreateTableForm()
+    formPreset = PresetTables()
+
+    preset = formPreset.preset.data
+
+    presetURL = ""
+    presetColumns = ""
+    tableTitle = ""
+    if preset is not None:
+        query = dbUtils.selectAllfromTableWhere("dbutils/db1.db","presets","name",str(preset))
+        print("THE QUERY RESULT IS: ", query[1:][0][3], query[1:][0][2]) #columns, 2 is url
+        presetURL = query[1:][0][2]
+        presetColumns = query[1:][0][3]
+        tableTitle = query[1:][0][1] + " Table"
+
+    url = form.url.data
+    headers = form.headers.data
+    columns = form.columns.data
+    pdf = form.pdf.data
+    excel = form.excel.data
+    copy = form.copy.data
+
+    copy = "copy" if copy == True else ""
+    pdf = "pdf" if pdf == True else ""
+    excel = "excel" if excel == True else ""
+    
+    if columns is not None:
+        columns = columns.split(', ')
+        print("YOUR NEW COLUMNS LIST IS:",columns)
+        print("YOUR BOOL VALUES ARE: ", copy, excel, pdf)
+
+    return table4(url=url, headers=headers, columns=columns, pdf=pdf, excel=excel, copy=copy, presetColumns=presetColumns, presetURL=presetURL, tableTitle=tableTitle)

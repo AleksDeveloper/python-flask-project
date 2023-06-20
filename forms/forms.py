@@ -49,5 +49,22 @@ class SignUpForm(FlaskForm):
     password = PasswordField('Password', validators = [InputRequired()])
     birthdate = DateField('Birth Date', validators = [InputRequired()])
     gender = SelectField('Gender', choices=[('male', 'male'), ('female', 'female'), ('idk', 'idk')])
-
     submit = SubmitField('Sign Up')
+
+class CreateTableForm(FlaskForm):
+    url = StringField('API URL Request', validators=[DataRequired()])
+    headers = PasswordField('Auth Token', validators=[DataRequired()])
+    columns = StringField('Columns', validators=[DataRequired()])
+    pdf = BooleanField('Export to PDF')
+    excel = BooleanField('Export to Excel')
+    copy = BooleanField('Copy to clipboard')
+    submit = SubmitField('Create Table')
+    
+
+class PresetTables(FlaskForm):
+    preset = SelectField('Preset', choices=[('Calories by Activity', 'Calories by Activity'), ('Exercises by Muscle', 'Excercises by Muscle'),
+                                            ('Inflation Type', 'Inflation Type'), ('Inflation Country', 'Inflation Country'), ('Cities in Country', 'Cities'),
+                                            ('Emoji', 'Emoji')])
+    submit = SubmitField('Fill Fields')
+    
+

@@ -19,40 +19,44 @@
 
 // console.log(testJSONData());
 
+headerss = { 'X-Api-Key': 'ZEzlCg1B8mGFFTxttPY5Q7f0tspHHqIrxQU9KE4W'}
+
+columnas = [{ "data": "city_mpg" },
+{ "data": "class" },
+{ "data": "combination_mpg" },
+{ "data": "cylinders" },
+{ "data": "displacement" },
+{ "data": "drive" },
+{ "data": "fuel_type" },
+{ "data": "highway_mpg" },
+{ "data": "make" },
+{ "data": "model" },
+{ "data": "transmission" },
+{ "data": "year" }]
 
 
 $(document).ready(function(){
-    console.log(document.getElementById('model').innerHTML);
     var url = createURL(document.getElementById('make').innerHTML,document.getElementById('model').innerHTML, 
                         document.getElementById('year').innerHTML, document.getElementById('cylinders').innerHTML,
                         document.getElementById('fuel_type').innerHTML, document.getElementById('drive').innerHTML,
                          document.getElementById('limit').innerHTML);
     console.log(url);
-    var table = $('#tableUsers').DataTable({
+    var table = $('#tableCars').DataTable({
         //B parameter is for buttons, l parameter is for show entries
         dom: 'Blfrtip',
         buttons: [
-            'copy', 'excel', 'pdf'
+            'copy', 'excel',{
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            }
         ],
-        columns: [
-            { "data": "city_mpg" },
-            { "data": "class" },
-            { "data": "combination_mpg" },
-            { "data": "cylinders" },
-            { "data": "displacement" },
-            { "data": "drive" },
-            { "data": "fuel_type" },
-            { "data": "highway_mpg" },
-            { "data": "make" },
-            { "data": "model" },
-            { "data": "transmission" },
-            { "data": "year" },
-        ],
+        columns: columnas,
 
         ajax : {
             method: 'GET',
             url: url,
-            headers: { 'X-Api-Key': 'ZEzlCg1B8mGFFTxttPY5Q7f0tspHHqIrxQU9KE4W'},
+            headers: headerss,
             dataSrc: function (json) {
                 var data = JSON.parse(json.d);
                 console.log(data);
@@ -71,17 +75,11 @@ $(document).ready(function(){
     });
 });
 
-function search(){
-    var model = document.getElementById('input-model').value;
-    var year = document.getElementById('input-year').value;
-    console.log(model, year);
-    console.log(document.getElementById('modelosos'))
-}
 
 function createURL(make, model, year, cylinders, fuel_type, drive, limit){
     console.log(make, model, year, cylinders, fuel_type, drive, limit)
     url = 'https://api.api-ninjas.com/v1/cars?limit=50&model=element';
-    if(make === model === year === cylinders === fuel_type === drive === limit === null){
+    if(make === "None" && model ==="None" && year ==="None" && cylinders ==="None" && fuel_type ==="None" && drive ==="None" && limit === "None"){
         console.log("entro")
         url = 'https://api.api-ninjas.com/v1/cars?limit=50&model=element';
     }else{

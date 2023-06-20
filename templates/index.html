@@ -42,28 +42,14 @@
 
 </style>
 
-<body>
-
-    {% with messages = get_flashed_messages(with_categories = true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ 'warning' if category == 'warning' else 'success' if category == 'success' else
-                                       'info' if category == 'info' }} alert-dismissable fade show">
-                <strong>{{ message }}</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-    {% endif %}
-    {% endwith %}
+<body style="padding:10px">
 
     <h1>Personal Project by Alejandro Carrillo</h1>
     <p>The goal of this project is to learn (in the best way), technologies such as:</p>
 
     <div class="list-item">
         <span class="vignette"></span>
-        Python
+        <p style="display:inline"><b>Python</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             Dataclasses <br>
@@ -77,7 +63,7 @@
             Functions <br>
         </div>
         <span class="vignette"></span>
-        Flask
+        <p style="display: inline;"><b>Flask</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             Jinja Templates <br>
@@ -97,7 +83,7 @@
             Kwargs and args <br>
         </div>
         <span class="vignette"></span>
-        Datatables
+        <p style="display:inline;"><b>Datatables</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             Data from Database <br>
@@ -113,19 +99,19 @@
             Styling <br>
         </div>
         <span class="vignette"></span>
-        SQLite 3
+        <p style="display:inline;"><b>SQLite 3</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             CRUD in local database <br>
         </div>
         <span class="vignette"></span>
-        JQuery
+        <p style="display:inline;"><b>JQuery</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             AJAX calls
         </div>
         <span class="vignette"></span>
-        JavaScript
+        <p style="display:inline;"><b>JavaScript</b></p>
         <div class="list-item">
             <span class="vignette"></span>
             Loops <br>
