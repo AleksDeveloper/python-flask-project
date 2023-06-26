@@ -43,12 +43,12 @@ def login():
                 next_page = request.args.get('next')
                 if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('home')
-                flash("Usuario " + str(form.user.data) + " logueado con éxito", "success")
+                flash("User: " + str(form.user.data) + " logged in successfully", "success")
                 return redirect(next_page)
             else:
-                flash("La contraseña para el usuario " + str(form.user.data) + " es incorrecta.", "warning")
+                flash("Password for user: " + str(form.user.data) + " is incorrect.", "warning")
         else:
-            flash("Usuario " + str(form.user.data) + " no existe.", "warning")        
+            flash("User: " + str(form.user.data) + " doesn't exist.", "warning")        
         # HERE ENDS THE MAGIC - COMPARISON
 
     return render_template('login.html', form=form)
@@ -86,8 +86,9 @@ def signup():
             dbUtils.insertFullTable("dbutils/db1.db", "users2", user_created)
             #Keep user logged in
             login_user(user_created, remember=True)
+            flash("User " + str(user) + " registered and logged in.", "success")
         else:
-            flash("Usuario " + str(user) + "  o email " + str(email) + " ya registrados. <br> Por favor, intenta con otros", "warning")
+            flash("User " + str(user) + "  or email " + str(email) + " already registered. Please, try again.", "warning")
             return render_template("signup.html", form=form)
         next_page = request.args.get('next', None)
         if not next_page or url_parse(next_page).netloc != '':
@@ -165,7 +166,6 @@ def addrec():
         finally:
             print("RESULT OF SQL OPERATION: " + msg)
             flash(user + " " + msg, 'success')
-            flash("Este flash es un demo del info", 'info')
             return redirect(url_for("table2"))
 
 @app.route('/deletionWTForms', methods = ["POST"])
@@ -174,7 +174,7 @@ def deletionWTForms():
     id = form2.id.data                                                                        
     if request.method == 'POST':
         dbUtils.deleteRegistry("dbutils/db1.db", "users", "id", id)
-        flash(id + " deleted successfully", "warning")
+        flash(id + " deleted successfully.", "warning")
     return redirect(url_for('table2'))        
 
 @app.route('/update', methods = ["POST"])
@@ -203,7 +203,7 @@ def update():
 
     if request.method == 'POST':
         dbUtils.updateRegistry("dbutils/db1.db", "users", "id", updated.id, updated)
-        flash(updated.id + " modified successfully", "info")
+        flash(updated.id + " modified successfully.", "info")
     return redirect(url_for('table2'))
 
 @app.route('/tableupdate', methods = ["POST"])

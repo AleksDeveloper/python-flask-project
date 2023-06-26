@@ -62,7 +62,7 @@ class CreateTableForm(FlaskForm):
     
 
 class PresetTables(FlaskForm):
-    preset = SelectField('Preset', choices=[('Calories by Activity', 'Calories by Activity'), ('Exercises by Muscle', 'Excercises by Muscle'),
+    preset = SelectField('Preset', choices=[('Calories by Activity', 'Calories by Activity'), ('Exercises by Muscle', 'Exercises by Muscle'),
                                             ('Inflation Type', 'Inflation Type'), ('Inflation Country', 'Inflation Country'), ('Cities in Country', 'Cities'),
                                             ('Emoji', 'Emoji')])
     submit = SubmitField('Fill Fields')

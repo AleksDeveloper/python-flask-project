@@ -11,24 +11,41 @@
 {% extends 'base.html' %}
 {% block content %}
 <body>
-    <form action="" method="POST">
-        <!-- Important for validation: -->
-        {{ form.hidden_tag() }}
-        <!-- Rest of the form: -->
-        {{ form.name.label }}
-        {{ form.name(size=15) }}
-        {{ form.user.label }}
-        {{ form.user(size=15) }}
-        {{ form.email.label }}
-        {{ form.email(size=15) }}
-        {{ form.password.label }}
-        {{ form.password(size=15) }}
-        {{ form.gender.label }}
-        {{ form.gender(size=10) }}
-        {{ form.birthdate.label }}
-        {{ form.birthdate(size=10) }}
-        {{ form.submit(size=15) }}
-    </form>
+    <div class="container" style="display: flex; align-items: center; justify-content: center;">
+        <form action="" method="POST">
+            <!-- Important for validation: -->
+            {{ form.hidden_tag() }}
+            <!-- Rest of the form: -->
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.name.label (class="form-label") }}
+                {{ form.name(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.user.label (class="form-label") }}
+                {{ form.user(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.email.label (class="form-label") }}
+                {{ form.email(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.password.label (class="form-label") }}
+                {{ form.password(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.gender.label (class="form-label") }}
+                {{ form.gender(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.birthdate.label (class="form-label") }}
+                {{ form.birthdate(class="form-control", style="width:300px") }}
+            </div>
+            <div class="field" style="display:grid; justify-items:center;">
+                {{ form.submit(class="btn btn-primary", style="margin-top:10px;") }}
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>
 {% endblock %}

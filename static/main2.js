@@ -47,11 +47,7 @@ function prepareHTML(data) {
 }
 
 function deleteRegistry(){
-    alert("your data is: " + String(document.getElementById("modal_body").innerText));
-    document.getElementById("formid").value = document.getElementById("spanid").innerText;
-    alert("A ver si jala antes de:");
-    console.log("Your value is: " + document.getElementById("formid").value);
-    alert("Wacha si jalo?");
+    alert("Deleted successfully.");
 }
 
 function functionupdate(){
