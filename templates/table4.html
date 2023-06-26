@@ -20,32 +20,44 @@
     <p id="excel" style="visibility: hidden; position: absolute;">{{ excel }}</p>
     <p id="copy" style="visibility: hidden; position: absolute;">{{ copy }}</p>
 
-    <div class="container" style="display:flex; justify-content: flex-start; align-items: flex-start; margin: 0;">
+    <div class="container" style="display:flex; justify-content: flex-start; align-items: flex-start; margin: 0; max-width: 95%; padding:0;">
         <div class="left-content" style="width: 60%">
             <form action="{{ url_for('table4update') }}" method="POST">
                 {{ form.hidden_tag() }}
-                {{ form.url.label (class="form-label") }}
-                {{ form.url(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetURL) }}
-                {{ form.headers.label (class="form-label") }}
-                {{ form.headers(id="form-APIKey", class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;") }}
-                {{ form.columns.label (class="form-label") }}
-                {{ form.columns(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetColumns) }}
-                {{ form.pdf.label (class="form-label") }}
-                {{ form.pdf(class="form-check-input", style="display:inline-block") }}
-                {{ form.excel.label (class="form-label") }}
-                {{ form.excel(class="form-check-input", style="display:inline-block") }}
-                {{ form.copy.label (class="form-label") }}
-                {{ form.copy(class="form-check-input", style="display:inline-block") }}
-                {{ form.submit(class="btn btn-primary") }}
+                <div class="field">
+                    {{ form.url.label (class="form-label") }}
+                    {{ form.url(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetURL) }}
+                </div>
+                <div class="field">
+                    {{ form.headers.label (class="form-label") }}
+                    {{ form.headers(id="form-APIKey", class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;") }}
+                </div>
+                <div class="field">
+                    {{ form.columns.label (class="form-label") }}
+                    {{ form.columns(class="form-control", style="width:80%; display:inline-block; margin-top:5px; margin-bottom:5px;", value=presetColumns) }}
+                </div>
+                <div class="field">
+                    {{ form.pdf.label (class="form-label") }}
+                    {{ form.pdf(class="form-check-input", style="display:inline-block") }}
+                    {{ form.excel.label (class="form-label") }}
+                    {{ form.excel(class="form-check-input", style="display:inline-block") }}
+                    {{ form.copy.label (class="form-label") }}
+                    {{ form.copy(class="form-check-input", style="display:inline-block") }}
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
             </form>
-            <button class="btn btn-secondary" style="display:inline-block" onclick="showAPIKey()">Show API KEY</button>
-            <button class="btn btn-secondary" style="display:inline-block" onclick="saveAPIKey()">Save API KEY</button>
+            <div class="buttons" style="margin-top: 5px;">
+                <button class="btn btn-secondary" style="display:inline-block" onclick="showAPIKey()">Show API KEY</button>
+                <button class="btn btn-secondary" style="display:inline-block" onclick="saveAPIKey()">Save API KEY</button>
+            </div>
         </div>
         <div class="right-content" style="width: 40%;">
             <form action="{{ url_for('table4update') }}" method="POST">
-                {{ formPreset.preset.label }}
-                {{ formPreset.preset(class="form-control") }}
-                {{ formPreset.submit(class="btn btn-primary") }}
+                <div class="field">
+                    {{ formPreset.preset.label }}
+                    {{ formPreset.preset(class="form-control") }}
+                </div>
+                {{ formPreset.submit(class="btn btn-primary", style="margin-top:5px;") }}
             </form>
         </div>
     </div>
