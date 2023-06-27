@@ -81,4 +81,4 @@ This is a personal project; Here, you can:
 Once cloning this repo and installing the required packages **(Python3, venv, Flask, SQLite3, WTForms)**, execute this command, so you run the project in a virtual development server at your local machine.
 `python -m flask run`.
 
-asdasdasd another asd
+asdasdasd another asd otro
