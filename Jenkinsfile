@@ -1,11 +1,11 @@
 pipeline{
     agent any
-    tools{
+    /* tools{
         
-    }
-    environment{
+    // }
+    // environment{
 
-    }
+     }*/
     stages{
         stage('Test Webhook') {
             steps {
