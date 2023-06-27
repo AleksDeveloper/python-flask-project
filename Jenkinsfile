@@ -33,6 +33,19 @@ pipeline{
         stage('Deployment') {
             steps {
                 echo 'This is the deployment'
+                script {
+                    try {
+                        sh '''
+                        docker rm -vf $(docker ps -aq)
+                        '''
+                    }catch(error) {
+                        echo error.getMessage()
+                    }
+                    sh '''
+                        docker run -d --name flaskticeapp -p 8000:8000 alejandrodjc/flasktice-aleks
+                        docker ps -a
+                    '''
+                }
                 // sh 'python3 -m flask run -h 0.0.0.0 -p 8000'
             }
         }
