@@ -26,7 +26,7 @@ pipeline{
         stage('Build') {
             steps {
                 echo 'This is the build stage'
-                sh 'python3 -m flask run'
+                sh 'python3 -m flask run -h 0.0.0.0 -p 5000'
             }
         }
 
