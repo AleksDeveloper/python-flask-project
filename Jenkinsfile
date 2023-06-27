@@ -7,6 +7,14 @@ pipeline{
 
      }*/
     stages{
+        stage('Requisites') {
+            echo 'Install Python'
+            sh 'python3 --version'
+            echo 'Now showing the working dir of the cloned repo:\n'
+            sh 'pwd'
+            sh 'ls -la'
+        }
+
         stage('Test Webhook') {
             steps {
                 echo 'Webhook works'
