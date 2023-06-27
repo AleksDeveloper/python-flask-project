@@ -14,19 +14,19 @@ pipeline{
                 echo 'Now showing the working dir of the cloned repo:\n'
                 sh 'pwd'
                 sh 'ls -la'
+                // echo '\n****Setting up venv****\n'
+                // echo 'Installing venv'
+                // sh 'pip install '
+                echo '\n****Installing Requirements****\n'
+                sh 'pip install -r requirements.txt'
             }
 
-        }
-
-        stage('Test Webhook') {
-            steps {
-                echo 'Webhook works'
-            }
         }
 
         stage('Build') {
             steps {
                 echo 'This is the build stage'
+                sh 'python3 -m flask run'
             }
         }
 
