@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phising Tool</title>
+</head>
+{% extends "base.html" %}
+{% block content %}
+<body style="padding:10px">
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.sender.label() }}
+        {{ form.sender(class="form-control", style="padding:5px; width:24%; display:inline-block") }}
+        {{ form.senderPassword.label() }}
+        {{ form.senderPassword(class="form-control", style="padding:5px; width:18%; display:inline-block") }}
+        {{ form.recipient.label() }}
+        {{ form.recipient(class="form-control", style="padding:5px; width:40%; display:inline-block") }}
+        {{ form.subject.label() }}
+        {{ form.subject(class="form-control", style="padding:5px; width:27%; display:inline-block; margin-top:10px;") }}
+        <br>
+        {{ form.message.label() }}
+        {{ form.message(class="form-control", style="padding:5px; width:95%; display:inline-block; margin-top:10px") }}
+        {{ form.attachment.label() }}
+        {{ form.attachment(class="form-control", style="padding:5px; width:55%; display:inline-block; margin-top:10px") }}
+        {{ form.submit(class="btn btn-primary", style="margin-left:15px;") }}
+    </form>
+</body>
+</html>
+{% endblock %}

@@ -39,6 +39,12 @@ __pycache__/
 # C extensions
 *.so
 
+# dotenv
+*.env
+
+#uploads folder
+/static/uploads
+
 # Distribution / packaging
 .Python
 env/

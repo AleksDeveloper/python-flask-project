@@ -71,7 +71,7 @@
     {% if messages %}
         {% for category, message in messages %}
             <div class="alert alert-{{ 'warning' if category == 'warning' else 'success' if category == 'success' else
-                                       'info' if category == 'info' }} alert-dismissable fade show">
+                                       'info' if category == 'info' else 'danger' if category == 'danger' }} alert-dismissable fade show">
                 <strong>{{ message }}</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -89,6 +89,8 @@
     <li><a href="/table2">Workers Table</a></li>
     <li><a href="/table3">Cars Table</a></li>
     <li><a href="/table4">Create your Table</a></li>
+    <li><a href="/email">Pishing Tool</a></li>
+    <li><a href="/email2">Email Tool</a></li>
     <div class="containerUser" style="position: absolute; right: 0px;">
     {% if current_user.is_anonymous %}
 

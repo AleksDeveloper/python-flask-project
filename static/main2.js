@@ -47,7 +47,7 @@ function prepareHTML(data) {
 }
 
 function deleteRegistry(){
-    alert("Deleted successfully.");
+    
 }
 
 function functionupdate(){
