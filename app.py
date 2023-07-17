@@ -2,9 +2,15 @@ from flask import session, Flask, redirect, render_template, request, flash, url
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from dbutils import dbUtils
 from dataclasses import dataclass, fields
-from forms.forms import CreateTableForm, InsertForm, LoginForm, PresetTables, SignUpForm, DeleteForm, UpdateForm, SearchForm
+from forms.forms import CreateTableForm, HTMLEmailSendForm, InsertForm, LoginForm, PresetTables, SignUpForm, DeleteForm, UpdateForm, SearchForm, EmailSendForm
 from model import User, getUser, users, getUser2, createFromDB
 from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
+from emailutils.emailUtils import send_email_mul_att, send_email_as_html
+from dotenv import load_dotenv
+load_dotenv()
+from os import getenv
+from flask_ckeditor import CKEditor
 import sqlite3
 
 app = Flask(__name__)
@@ -13,6 +19,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message = "You need to be logged in to view this page, please log in."
 login_manager.login_message_category = "warning"
+ckeditor = CKEditor(app)
 
 @app.route("/")
 def home():
@@ -171,7 +178,8 @@ def addrec():
 @app.route('/deletionWTForms', methods = ["POST"])
 def deletionWTForms():
     form2 = DeleteForm()
-    id = form2.id.data                                                                        
+    id = form2.id.data          
+    print("\n\nID IS: ", id, "\n\n")                                                              
     if request.method == 'POST':
         dbUtils.deleteRegistry("dbutils/db1.db", "users", "id", id)
         flash(id + " deleted successfully.", "warning")
@@ -321,3 +329,64 @@ def table4update():
         print("YOUR BOOL VALUES ARE: ", copy, excel, pdf)
 
     return table4(url=url, headers=headers, columns=columns, pdf=pdf, excel=excel, copy=copy, presetColumns=presetColumns, presetURL=presetURL, tableTitle=tableTitle)
+
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    form = EmailSendForm()
+    sender = senderPassword = recipient = subject = message = attachments = ""
+
+    if form.validate_on_submit():
+        sender = form.sender.data
+        senderPassword = form.senderPassword.data
+        recipient = form.recipient.data
+        recipientsList = recipient.split(";")
+        subject = form.subject.data
+        message = form.message.data
+        attachments = form.attachment.data
+        print(sender, senderPassword, recipient, subject, message, attachments, recipientsList)
+        print(type(attachments))
+        print(attachments)
+        print(len(attachments))
+        print(attachments[0].filename)
+        attachmentsList = []
+        if(attachments[0].filename != ""):
+            for attachment in attachments:
+                print("Gonna save:", attachment)
+                attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
+                attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
+        status = send_email_mul_att(sender, senderPassword, recipientsList, subject, message, attachmentsList)
+        if status != "OK":
+            flash("ERROR: " + str(status), "danger")
+        elif status == "OK":
+            flash("Email sent from: " + str(sender) + " to " + str(recipient), "success")
+    return render_template('email.html', form=form, sender=sender, senderPassword=senderPassword, recipient=recipient, subject=subject, message=message, attachments=attachments)
+
+@app.route('/email2', methods=['GET', 'POST'])
+def email2():
+    form = HTMLEmailSendForm()
+    sender = senderPassword = recipient = subject = message = attachments = ""
+
+    if form.validate_on_submit():
+        sender = form.sender.data
+        senderPassword = form.senderPassword.data
+        recipient = form.recipient.data
+        recipientsList = recipient.split(';')
+        subject = form.subject.data
+        message = form.message.data
+        attachments = form.attachment.data
+        print(sender, senderPassword, recipient, subject, message, attachments, recipientsList)
+        print(type(message))
+        print(message)
+        print(len(message))
+        attachmentsList = []
+        if(attachments[0].filename != ""):
+            for attachment in attachments:
+                print("Gonna save:", attachment)
+                attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
+                attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
+        status = send_email_as_html(sender, senderPassword, recipientsList, subject, message, attachmentsList)
+        if status != "OK":
+            flash("ERROR: " + str(status), "danger")
+        elif status == "OK":
+            flash("Email sent from: " + str(sender) + " to " + str(recipient), "success")
+    return render_template('email2.html', form=form, sender=sender, senderPassword=senderPassword, recipient=recipient, subject=subject, message=message, attachments=attachments)

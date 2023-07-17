@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, DecimalField, SelectField, EmailField, DateField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, DecimalField, SelectField, EmailField, DateField, TextAreaField, MultipleFileField, FileField
 from wtforms.validators import DataRequired, Email, InputRequired
+from flask_ckeditor import CKEditorField
 
 class InsertForm(FlaskForm):
     user = StringField('User', validators = [DataRequired()])
@@ -66,5 +67,23 @@ class PresetTables(FlaskForm):
                                             ('Inflation Type', 'Inflation Type'), ('Inflation Country', 'Inflation Country'), ('Cities in Country', 'Cities'),
                                             ('Emoji', 'Emoji')])
     submit = SubmitField('Fill Fields')
-    
 
+class EmailSendForm(FlaskForm):
+    sender = EmailField('From Email', validators = [InputRequired()])
+    senderPassword = PasswordField('Password', validators = [InputRequired()])
+    recipient = StringField('Recipient(s)', validators = [InputRequired()])
+    subject = StringField('Subject')
+    message = TextAreaField('Message')
+    attachment = MultipleFileField('Attachment(s)')
+    singleAttachment = FileField('Attachment1')
+    submit = SubmitField('Send Email')
+
+class HTMLEmailSendForm(FlaskForm):
+    sender = EmailField('From Email', validators = [InputRequired()])
+    senderPassword = PasswordField('Password', validators = [InputRequired()])
+    recipient = StringField('Recipient(s)', validators = [InputRequired()])
+    subject = StringField('Subject')
+    message = CKEditorField('Body')
+    attachment = MultipleFileField('Attachment(s)')
+    singleAttachment = FileField('Attachment1')
+    submit = SubmitField('Send Email')

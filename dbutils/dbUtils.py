@@ -80,11 +80,11 @@ def deleteRegistry(db, table, field, value):
     try:
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()
-        response.execute("DELETE FROM " + table + " WHERE " + field + " = ?", (value,))
+        response.execute("DELETE FROM " + table + " WHERE " + field + " = ?", (str(value),))
         connectionDB.commit()
         connectionDB.close()
     except sqlite3.Error as e:
-        print("ERROR: " + e)
+        print("ERROR: " + str(e))
 
 def updateRegistry(db, table, where, valueWhere, values):
     try:
