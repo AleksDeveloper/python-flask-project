@@ -89,3 +89,9 @@ def send_email_as_html(sender, senderPassword, recipient, subject, htmlmessage, 
         return "OK"
     except smtplib.SMTPAuthenticationError as e:
         return str(e)
+    except smtplib.SMTPDataError as e:
+        return str(e)
+    except smtplib.SMTPConnectError as e:
+        return str(e)
+    except smtplib.SMTPNotSupportedError as e:
+        return str(e)

@@ -18,6 +18,20 @@ pipeline{
 
         }
 
+        stage('Static Code Analysis (SonarQube)') {
+            steps {
+                echo 'Static Code Analysis'
+                withSonarQubeEnv('SonarCloud') {
+                    sh '''${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.organization=aleksdeveloper \
+                        -Dsonar.projectKey=aleksdeveloper_Flasktice \
+                        -Dsonar.sources=/ \
+                        -Dsonar.host.url=https://sonarcloud.io
+                    '''
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'This is the build stage'
