@@ -23,7 +23,6 @@ ckeditor = CKEditor(app)
 
 @app.route("/")
 def home():
-    print(current_user)
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -32,21 +31,14 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        print("\nLOGINENTRO\n")
         # HERE IS THE MAGIC - COMPARISON
         if dbUtils.selectfromTable("dbutils/db1.db", "users2", "user", "user", str(form.user.data)) is not None:
             #Create the existent user temporarily in the users model
             user2 = createFromDB(form.user.data)
-            print(user2)
-            print("comparo password de user: ", user2.getPassword() + "\n Con el form: " + form.password.data)
-            print("Valido la password con hash: ", user2.check_password(form.password.data))
             user = getUser(form.user.data)
-            #user2 = getUser2(user, form.user.data)
-            print("USER:" + str(user) + "\nUSER 2: " + str(user2))
             if user2 is not None and user2.check_password(form.password.data):
                 users.append(user2)
                 login_user(user2, remember=form.remember_me.data, force=True, fresh=False)
-                print("CURRENT USER: ", current_user)
                 next_page = request.args.get('next')
                 if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('home')
@@ -68,13 +60,7 @@ def logout():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
-    try:
-        print("USERS ES:",users)
-        print(users[0].getPassword())
-    except IndexError as e:
-        print("INDEXERROR: ", str(e))
     if form.validate_on_submit():
-        print("ENTRO AL SUBMIT SIGNUP")
         name = form.name.data
         user = form.user.data
         email = form.email.data
@@ -83,13 +69,8 @@ def signup():
         gender = form.gender.data
         #User Creation and Save
         if dbUtils.selectfromTable("dbutils/db1.db", "users2", "user", "user", user) is None and dbUtils.selectfromTable("dbutils/db1.db", "users2", "email", "email", email) is None:
-            print("ENTRO PORQUE NO EXISTE USUARIO O EMAIL")
             user_created = User(len(users) + 1, name, user, email, password, birthdate, gender)
             users.append(user_created)
-            print(user_created)
-            print(type(user_created))
-            print(user_created.getUser())
-            print("\n Your password is:", user_created.getPassword())
             dbUtils.insertFullTable("dbutils/db1.db", "users2", user_created)
             #Keep user logged in
             login_user(user_created, remember=True)
@@ -113,24 +94,6 @@ def loadUser(userID):
             return user
     return None
 
-@app.route("/table1")
-@login_required
-def table():
-    form = SearchForm()
-    model = ""
-    year = ""
-    limit = ""
-    print (len(str((request))))
-    print(request)
-    #keys = ['model', 'year', 'limit']
-    #for k in keya
-    if(len(str(request))) > 46:
-        model = request.args['model']
-        year = request.args['year']
-        limit = request.args['limit']
-    print(model, year, limit)
-    
-    return render_template('table.html', form=form, model=model, year=year, limit=limit)
 
 @app.route("/table2")
 @login_required
@@ -140,11 +103,8 @@ def table2():
     form3 = UpdateForm()
 
     response = dbUtils.selectAllfromTable("dbutils/db1.db","users")
-    print("YOUR RESPONSE", response)
     headers = response[:1]
     data = response[1:]
-    print("YOUR HEADERS:", type(headers), headers)
-    print("YOUR DATA:", type(data), data)
     return render_template('table2.html', headers = headers, data = data, form = form, form2 = form2, form3 = form3)
 
 @app.route("/addrec", methods = ["POST", "GET"])
@@ -157,7 +117,6 @@ def addrec():
             worker = form.worker.data
             student = form.student.data
             incomes = form.incomes.data
-            print(user, password, worker, student, incomes, type(incomes))
 
             with sqlite3.connect("dbutils/db1.db") as con:
                 cur = con.cursor()
@@ -171,7 +130,6 @@ def addrec():
             con.close()
 
         finally:
-            print("RESULT OF SQL OPERATION: " + msg)
             flash(user + " " + msg, 'success')
             return redirect(url_for("table2"))
 
@@ -179,7 +137,6 @@ def addrec():
 def deletionWTForms():
     form2 = DeleteForm()
     id = form2.id.data          
-    print("\n\nID IS: ", id, "\n\n")                                                              
     if request.method == 'POST':
         dbUtils.deleteRegistry("dbutils/db1.db", "users", "id", id)
         flash(id + " deleted successfully.", "warning")
@@ -199,16 +156,6 @@ def update():
         incomes: float
 
     updated = Registry(form3.id.data, form3.user.data, form3.password.data, int(form3.worker.data), int(form3.student.data), form3.incomes.data)
-
-    print("\n\n\n" + updated.id, updated.user, updated.password, updated.worker, updated.student, updated.incomes, "\n\n")
-    print(type(form3.student.data), type(updated.student))
-    print("Converted:? ", str(int(updated.student)))
-    print(updated)
-
-    # for field in fields(updated2):
-    #     print(field.name, getattr(updated2, field.name))
-    # print("\n\nFinishedLooping\n\n")
-
     if request.method == 'POST':
         dbUtils.updateRegistry("dbutils/db1.db", "users", "id", updated.id, updated)
         flash(updated.id + " modified successfully.", "info")
@@ -223,24 +170,11 @@ def tableupdate():
     session['model'] = model
     session['year'] = year
     session['limit'] = limit
-    print(model, year, limit)
-    #args kwargs
     return redirect(url_for('table', model = model, year = year, limit = limit))
 
 @app.route('/table3')
 def table3(**kwargs):
     form = SearchForm()
-    #THIS APPROACH (line below) DOESNT SHOW AN ERROR IF model DOESNT EXIST
-    print("TABLE3\n", kwargs.get('make'), kwargs.get('fuel_type'), kwargs.get('drive'))
-    print(kwargs)
-    print(type(kwargs))
-    #THIS APPROACH (line below) SHOWS AN ERROR IF model DOESNT EXIST
-    #print(kwargs["model"])
-    for value in kwargs.values():
-        print(value, end=" ")
-    for key in kwargs.keys():
-        print(key, end=" ")
-    #Strings de búsqueda en Python - Medium
     make = kwargs.get('make')
     model = kwargs.get('model')
     year = kwargs.get('year')
@@ -253,7 +187,6 @@ def table3(**kwargs):
 @app.route('/table3update', methods=["POST"])
 def table3update():
     form = SearchForm()
-    
     make = form.make.data
     model = form.model.data
     year = form.year.data
@@ -262,16 +195,12 @@ def table3update():
     drive = form.drive.data
     limit = form.limit.data
     
-    #return redirect(url_for('table3', make=make, model=model, year=year, cylinders=cylinders, fuel_gas=fuel_gas, fuel_diesel=fuel_diesel, fuel_electricity=fuel_electricity, limit=limit))
     return table3(make=make, model=model, year=year, cylinders=cylinders, fuel_type=fuel_type, drive=drive, limit=limit)
 
 @app.route('/table4')
 def table4(**kwargs):
     form = CreateTableForm()
     formPreset = PresetTables()
-
-    print("\nTABLE4:", kwargs.get('url'), kwargs.get('headers'), kwargs.get('columns'), kwargs.get('pdf'), kwargs.get('excel'), kwargs.get('copy'))
-
     url = kwargs.get('url')
     headers = kwargs.get('headers')
     if kwargs.get('columns') is None:
@@ -307,7 +236,6 @@ def table4update():
     tableTitle = ""
     if preset is not None:
         query = dbUtils.selectAllfromTableWhere("dbutils/db1.db","presets","name",str(preset))
-        print("THE QUERY RESULT IS: ", query[1:][0][3], query[1:][0][2]) #columns, 2 is url
         presetURL = query[1:][0][2]
         presetColumns = query[1:][0][3]
         tableTitle = query[1:][0][1] + " Table"
@@ -325,8 +253,6 @@ def table4update():
     
     if columns is not None:
         columns = columns.split(', ')
-        print("YOUR NEW COLUMNS LIST IS:",columns)
-        print("YOUR BOOL VALUES ARE: ", copy, excel, pdf)
 
     return table4(url=url, headers=headers, columns=columns, pdf=pdf, excel=excel, copy=copy, presetColumns=presetColumns, presetURL=presetURL, tableTitle=tableTitle)
 
@@ -343,15 +269,9 @@ def email():
         subject = form.subject.data
         message = form.message.data
         attachments = form.attachment.data
-        print(sender, senderPassword, recipient, subject, message, attachments, recipientsList)
-        print(type(attachments))
-        print(attachments)
-        print(len(attachments))
-        print(attachments[0].filename)
         attachmentsList = []
         if(attachments[0].filename != ""):
             for attachment in attachments:
-                print("Gonna save:", attachment)
                 attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
                 attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
         status = send_email_mul_att(sender, senderPassword, recipientsList, subject, message, attachmentsList)
@@ -374,14 +294,9 @@ def email2():
         subject = form.subject.data
         message = form.message.data
         attachments = form.attachment.data
-        print(sender, senderPassword, recipient, subject, message, attachments, recipientsList)
-        print(type(message))
-        print(message)
-        print(len(message))
         attachmentsList = []
         if(attachments[0].filename != ""):
             for attachment in attachments:
-                print("Gonna save:", attachment)
                 attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
                 attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
         status = send_email_as_html(sender, senderPassword, recipientsList, subject, message, attachmentsList)
