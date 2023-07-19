@@ -1,11 +1,13 @@
 pipeline{
     agent any
-    /* tools{
-        
-    // }
-    // environment{
+    /*tools{
 
-     }*/
+    }*/
+
+    environment{
+        scannerHome = tool 'SQS 4.8.0.2856';
+     }
+
     stages{
         stage('Requisites') {
             steps{
