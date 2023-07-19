@@ -45,6 +45,9 @@ __pycache__/
 #uploads folder
 /static/uploads
 
+#demo using pywin32
+/emailutils/demo.py
+
 # Distribution / packaging
 .Python
 env/
