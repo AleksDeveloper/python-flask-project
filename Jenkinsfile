@@ -27,7 +27,6 @@ pipeline{
                     sh '''${scannerHome}/bin/sonar-scanner \
                         -Dsonar.organization=aleksdeveloper \
                         -Dsonar.projectKey=aleksdeveloper_Flasktice \
-                        -Dsonar.sources=/ \
                         -Dsonar.host.url=https://sonarcloud.io
                     '''
                 }
