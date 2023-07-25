@@ -273,8 +273,8 @@ def email():
         attachmentsList = []
         if(attachments[0].filename != ""):
             for attachment in attachments:
-                attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
-                attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
+                attachment.save(str(os.environ.get("MY_UPLOADS_PATH")) + attachment.filename)
+                attachmentsList.append(str(os.environ.get("MY_UPLOADS_PATH")) + attachment.filename)
         status = send_email_mul_att(sender, senderPassword, recipientsList, subject, message, attachmentsList)
         if status != "OK":
             flash("ERROR: " + str(status), "danger")
@@ -296,16 +296,21 @@ def email2():
         message = form.message.data
         attachments = form.attachment.data
         attachmentsList = []
-        if not os.path.exists(str(getenv("MY_UPLOADS_PATH"))):
-            os.makedirs(str(os.getenv("MY_UPLOADS_PATH")))
+        # if not os.path.exists(str(getenv("MY_UPLOADS_PATH"))):
+        #     os.makedirs(str(os.getenv("MY_UPLOADS_PATH")))
+        #     print("Folder created successfully")
+        if not os.path.exists(str(os.environ.get('MY_UPLOADS_PATH'))):
+            os.makedirs(str(os.environ.get('MY_UPLOADS_PATH')))
             print("Folder created successfully")
         else:
             print("Folder already exists")
         if(attachments[0].filename != ""):
             for attachment in attachments:
-                #attachment.save(str(getenv("MY_UPLOADS_PATH")) + attachment.filename)
-                attachment.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), str(getenv("MY_UPLOADS_PATH")), secure_filename(attachment.filename)))
-                attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + secure_filename(attachment.filename))
+                attachment.save(str(os.environ.get("MY_UPLOADS_PATH")) + attachment.filename)
+                #attachment.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), str(getenv("MY_UPLOADS_PATH")), secure_filename(attachment.filename)))
+                #attachmentsList.append(str(getenv("MY_UPLOADS_PATH")) + secure_filename(attachment.filename))
+                attachmentsList.append(str(os.environ.get('MY_UPLOADS_PATH')) + attachment.filename)
+                print("LIST IS: ", attachmentsList)
         status = send_email_as_html(sender, senderPassword, recipientsList, subject, message, attachmentsList)
         if status != "OK":
             flash("ERROR: " + str(status), "danger")

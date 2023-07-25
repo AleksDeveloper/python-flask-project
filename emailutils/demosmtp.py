@@ -1,7 +1,9 @@
 from email.message import EmailMessage
 import smtplib
+from os import environ
 
-sender = "pythontesteract@outlook.com"
+sender = environ.get('MY_OUTLOOK_EMAIL')
+password = environ.get('MY_OUTLOOK_PASSWORD')
 recipient = "aliecama@hotmail.com"
 subject = "Test email with SMTP and Outlook from Python"
 message = "Hello World!, now attaching a file to this"
@@ -26,6 +28,6 @@ with open("../icon.png", "rb") as f:
 
 smtp = smtplib.SMTP("smtp-mail.outlook.com", port=587)
 smtp.starttls()
-smtp.login(sender, "SacaLasPPython12")
+smtp.login(sender, password)
 smtp.sendmail(sender, recipient, email.as_string())
 smtp.quit()
