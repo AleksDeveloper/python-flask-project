@@ -12,9 +12,10 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 #Set environment variables inside the container
-ENV MY_OUTLOOK_EMAIL=${MY_OUTLOOK_EMAIL}
-ENV MY_OUTLOOK_PASSWORD=${MY_OUTLOOK_PASSWORD}
-ENV MY_UPLOADS_PATH=${MY_UPLOADS_PATH}
+RUN echo $MY_OUTLOOK_EMAIL
+ENV MY_OUTLOOK_EMAIL=$MY_OUTLOOK_EMAIL
+ENV MY_OUTLOOK_PASSWORD=$MY_OUTLOOK_PASSWORD
+ENV MY_UPLOADS_PATH=$MY_UPLOADS_PATH
 
 COPY . .
 #Execute this command, to start the flask app, running in all addresses, mapped to port 8000
