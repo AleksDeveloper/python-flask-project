@@ -57,7 +57,8 @@ pipeline{
                         echo error.getMessage()
                     }
                     sh '''
-                        docker run -d --name flaskticeapp -p 8000:8000 alejandrodjc/flasktice-aleks
+                        env
+                        docker run -d --name flaskticeapp -p 8000:8000 -e $MY_OUTLOOK_EMAIL -e $MY_OUTLOOK_PASSWORD -e $MY_UPLOADS_PATH alejandrodjc/flasktice-aleks
                         docker ps -a
                     '''
                 }
