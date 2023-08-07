@@ -77,8 +77,10 @@ def send_email_as_html(sender, senderPassword, recipient, subject, htmlmessage, 
             email.add_attachment(
                 f.read(),
                 filename = str(list.rsplit('/', 1)[-1]),
-                maintype = str(guess_type(str(list))).split('/')[0],
-                subtype = str(guess_type(str(list))).split('/')[1]
+                maintype = "application",
+                subtype = "octet-stream"
+                # maintype = str(guess_type(str(list))).split('/')[0],
+                # subtype = str(guess_type(str(list))).split('/')[1]
             )
     try:
         smtp = smtplib.SMTP("smtp-mail.outlook.com", port=587)

@@ -42,6 +42,7 @@ __pycache__/
 # dotenv
 *.env
 
+
 #uploads folder
 /static/uploads
 
