@@ -72,7 +72,7 @@ def signup():
         if dbUtils.selectfromTable("dbutils/db1.db", "users2", "user", "user", user) is None and dbUtils.selectfromTable("dbutils/db1.db", "users2", "email", "email", email) is None:
             user_created = User(len(users) + 1, name, user, email, password, birthdate, gender)
             users.append(user_created)
-            dbUtils.insertFullTable("dbutils/db1.db", "users2", user_created)
+            dbUtils.insert_full_table("dbutils/db1.db", "users2", user_created)
             #Keep user logged in
             login_user(user_created, remember=True)
             flash("User " + str(user) + " registered and logged in.", "success")

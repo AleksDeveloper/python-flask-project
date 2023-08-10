@@ -12,23 +12,23 @@ def mock_smtp():
         smtp_instance.login.return_value = None
         yield smtp_instance
 
-# def test_send_email_successfully(mock_smtp):
-#     sender = environ.get("MY_OUTLOOK_EMAIL")
-#     sender_password = environ.get("MY_OUTLOOK_PASSWORD")
-#     recipient = 'recipient@example.com'
-#     subject = 'Test Subject'
-#     html_message = '<html><body><h1>Hello my friend</h1></body></html>'
-#     attachments = ['../../static/uploads/Izzi.pdf', '../../static/uploads/Inventario.xlsx']
+def test_send_email_successfully(mock_smtp):
+    sender = environ.get("MY_OUTLOOK_EMAIL")
+    sender_password = environ.get("MY_OUTLOOK_PASSWORD")
+    recipient = 'recipient@example.com'
+    subject = 'Test Subject'
+    html_message = '<html><body><h1>Hello my friend</h1></body></html>'
+    attachments = ['../../static/uploads/Izzi.pdf', '../../static/uploads/Inventario.xlsx']
 
-#     result = send_email_as_html(sender, sender_password, recipient, subject, html_message, attachments)
+    result = send_email_as_html(sender, sender_password, recipient, subject, html_message, attachments)
 
-#     assert result == "OK"
-#     expected_calls = [
-#         call(sender, recipient, MagicMock().as_string())
-#     ]
-#     #mock_smtp.sendmail.assert_called_once_with(sender, recipient, MagicMock().as_string())
-#     mock_smtp.sendmail.assert_has_calls(expected_calls)
-#     mock_smtp.quit.assert_called_once()
+    assert result == "OK"
+    expected_calls = [
+        call(sender, recipient, MagicMock().as_string())
+    ]
+    mock_smtp.sendmail.assert_called_once_with(sender, recipient, MagicMock().as_string())
+    mock_smtp.sendmail.assert_has_calls(expected_calls)
+    mock_smtp.quit.assert_called_once()
 
 def test_send_email_authentication_error(mock_smtp):
     sender = 'alejandro.carrillo@example.com'

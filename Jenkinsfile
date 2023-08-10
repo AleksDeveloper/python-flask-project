@@ -33,6 +33,16 @@ pipeline{
             }
         }
 
+        stage('Unit Testing') {
+            steps {
+                echo 'Unit Tesing'
+                sh 'pwd'
+                sh 'ls'
+                sh 'cd testing'
+                sh 'pytest --cov --html=report.html'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'This is the build stage'
