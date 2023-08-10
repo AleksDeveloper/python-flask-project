@@ -39,7 +39,11 @@ pipeline{
                 sh 'pwd'
                 sh 'ls'
                 sh 'cd testing'
-                sh 'pytest --cov --html=report.html'
+                sh '''
+                export PATH="/var/lib/jenkins/.local/bin:$PATH"
+                pytest --cov --html=report.html
+                
+                '''
             }
         }
 
@@ -68,7 +72,7 @@ pipeline{
                     }
                     sh '''
                         env
-                        docker run -d --name flaskticeapp -p 8000:8000 -e $MY_OUTLOOK_EMAIL -e $MY_OUTLOOK_PASSWORD -e $MY_UPLOADS_PATH alejandrodjc/flasktice-aleks
+                        docker run -d --name flaskticeapp -p 8000:8000 --env-file .env alejandrodjc/flasktice-aleks
                         docker ps -a
                     '''
                 }
