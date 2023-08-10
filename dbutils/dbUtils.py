@@ -57,7 +57,7 @@ def selectfromTable(db, table, value, where, data):
         print("INDEX ERROR: ", str(i))
 
 
-def insertFullTable(db, table, data):
+def insert_full_table(db, table, data):
     if db=="dbutils/db1.db" and table=="users2":
         try:
             connectionDB = sqlite3.connect(db)
