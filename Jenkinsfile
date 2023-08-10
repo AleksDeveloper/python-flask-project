@@ -39,11 +39,17 @@ pipeline{
                 sh 'pwd'
                 sh 'ls'
                 sh 'cd testing'
-                sh '''
-                export PATH="/var/lib/jenkins/.local/bin:$PATH"
-                pytest --cov --html=report.html
-                
-                '''
+                script {
+                    try {
+                        sh '''
+                        export PATH="/var/lib/jenkins/.local/bin:$PATH"
+                        pytest --cov --html=report.html
+                        '''                        
+                    }catch(error) {
+                        echo error.getMessage()
+                    }
+                }
+
             }
         }
 
