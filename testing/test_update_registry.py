@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import pytest
 import sqlite3
 from unittest.mock import patch
@@ -27,10 +28,10 @@ def test_update_existing_registry(mock_sqlite3_connect):
     #These must be existing values
     table = "existing_table"
     where = "valid_existing_field"
-    valueWhere = "valid_existing_value"
-    values = "valid_new_value"
+    #Create obj from dataclass
+    updated = Registry("1", "alex", "passwordalex", 0, 1, 2000322.12)
 
-    update_registry(db, table, where, valueWhere, values)
+    update_registry(db, table, where, updated.id, updated)
 
     mock_sqlite3_connect.cursor.assert_called_once()
     mock_cursor.execute.assert_called_once()
@@ -41,10 +42,10 @@ def test_update_nonexisting_registry(mock_sqlite3_connect):
     db = "nonexistingpath/nonexistingdb.db"
     table = "nonexistingtable"
     where = "nonvalid_nonexisting_field"
-    valueWhere = "nonvalid_nonexisting_value"
-    values = "nonvalid_new_value"
+    #Create obj from dataclass
+    updated = Registry("1", "alex", "passwordalex", 0, 1, 2000322.12)
 
-    update_registry(db, table, where, valueWhere, values)
+    update_registry(db, table, where, updated.id, updated)
     assert "ERROR: " + str(sqlite3.Error)
 
 if __name__ == '__main__':
