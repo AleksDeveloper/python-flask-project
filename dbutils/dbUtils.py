@@ -1,6 +1,6 @@
 import sqlite3
 
-def selectAllfromTable(db, table):
+def select_all_from_table(db, table):
     try:     
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()
@@ -22,7 +22,7 @@ def selectAllfromTable(db, table):
     except sqlite3.Error as e:
         print("ERROR: ", str(e))
 
-def selectAllfromTableWhere(db, table, where, value):
+def select_all_from_table_where(db, table, where, value):
     try:
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()
@@ -44,7 +44,7 @@ def selectAllfromTableWhere(db, table, where, value):
     except sqlite3.Error as e:
         print("ERROR: ", str(e))
 
-def selectfromTable(db, table, value, where, data):
+def select_from_table(db, table, value, where, data):
     try:
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()
@@ -70,13 +70,13 @@ def insert_full_table(db, table, data):
     else:
         print("THE DATABASE OR TABLE DOESN'T EXIST")
 
-def createDB(db):
+def create_db(db):
     try:
         connectionDB = sqlite3.connect(db)
     except sqlite3.Error as e:
         print("ERROR: " + e)
 
-def deleteRegistry(db, table, field, value):
+def delete_registry(db, table, field, value):
     try:
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()
@@ -86,7 +86,7 @@ def deleteRegistry(db, table, field, value):
     except sqlite3.Error as e:
         print("ERROR: " + str(e))
 
-def updateRegistry(db, table, where, valueWhere, values):
+def update_registry(db, table, where, valueWhere, values):
     try:
         connectionDB = sqlite3.connect(db)
         response = connectionDB.cursor()

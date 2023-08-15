@@ -38,18 +38,17 @@ pipeline{
                 echo 'Unit Tesing'
                 sh 'pwd'
                 sh 'ls'
-                sh 'cd testing'
                 script {
                     try {
                         sh '''
+                        cd testing
                         export PATH="/var/lib/jenkins/.local/bin:$PATH"
-                        pytest --cov --html=report.html
+                        pytest --cov --junitxml=report.xml
                         '''                        
                     }catch(error) {
                         echo error.getMessage()
                     }
                 }
-
             }
         }
 
@@ -84,6 +83,12 @@ pipeline{
                 }
                 // sh 'python3 -m flask run -h 0.0.0.0 -p 8000'
             }
+        }
+    }
+    post {
+        always {
+            //Publish rest results using xUnit
+            junit 'testing/*.xml'    
         }
     }
 }
