@@ -33,7 +33,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         # HERE IS THE MAGIC - COMPARISON
-        if dbUtils.selectfromTable("dbutils/db1.db", "users2", "user", "user", str(form.user.data)) is not None:
+        if dbUtils.select_from_table("dbutils/db1.db", "users2", "user", "user", str(form.user.data)) is not None:
             #Create the existent user temporarily in the users model
             user2 = createFromDB(form.user.data)
             user = getUser(form.user.data)
@@ -69,7 +69,7 @@ def signup():
         birthdate = form.birthdate.data
         gender = form.gender.data
         #User Creation and Save
-        if dbUtils.selectfromTable("dbutils/db1.db", "users2", "user", "user", user) is None and dbUtils.selectfromTable("dbutils/db1.db", "users2", "email", "email", email) is None:
+        if dbUtils.select_from_table("dbutils/db1.db", "users2", "user", "user", user) is None and dbUtils.select_from_table("dbutils/db1.db", "users2", "email", "email", email) is None:
             user_created = User(len(users) + 1, name, user, email, password, birthdate, gender)
             users.append(user_created)
             dbUtils.insert_full_table("dbutils/db1.db", "users2", user_created)
@@ -103,7 +103,7 @@ def table2():
     form2 = DeleteForm()
     form3 = UpdateForm()
 
-    response = dbUtils.selectAllfromTable("dbutils/db1.db","users")
+    response = dbUtils.select_all_from_table("dbutils/db1.db","users")
     headers = response[:1]
     data = response[1:]
     return render_template('table2.html', headers = headers, data = data, form = form, form2 = form2, form3 = form3)
@@ -139,7 +139,7 @@ def deletionWTForms():
     form2 = DeleteForm()
     id = form2.id.data          
     if request.method == 'POST':
-        dbUtils.deleteRegistry("dbutils/db1.db", "users", "id", id)
+        dbUtils.delete_registry("dbutils/db1.db", "users", "id", id)
         flash(id + " deleted successfully.", "warning")
     return redirect(url_for('table2'))        
 
@@ -158,7 +158,7 @@ def update():
 
     updated = Registry(form3.id.data, form3.user.data, form3.password.data, int(form3.worker.data), int(form3.student.data), form3.incomes.data)
     if request.method == 'POST':
-        dbUtils.updateRegistry("dbutils/db1.db", "users", "id", updated.id, updated)
+        dbUtils.update_registry("dbutils/db1.db", "users", "id", updated.id, updated)
         flash(updated.id + " modified successfully.", "info")
     return redirect(url_for('table2'))
 
@@ -236,7 +236,7 @@ def table4update():
     presetColumns = ""
     tableTitle = ""
     if preset is not None:
-        query = dbUtils.selectAllfromTableWhere("dbutils/db1.db","presets","name",str(preset))
+        query = dbUtils.select_all_from_table_where("dbutils/db1.db","presets","name",str(preset))
         presetURL = query[1:][0][2]
         presetColumns = query[1:][0][3]
         tableTitle = query[1:][0][1] + " Table"
