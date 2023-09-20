@@ -17,7 +17,7 @@ variable "project" {
 }
 
 variable "billing_code" {
-    type        = string
-    description = "Billin Code"
-    default     = "XXAWWSD980902"
+  type        = string
+  description = "Billin Code"
+  default     = "XXAWWSD980902"
 }
