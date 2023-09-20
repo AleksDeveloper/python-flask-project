@@ -124,7 +124,7 @@ jobs:
         run: |
              echo "Hello world"
              pwd
-             ls
+             ls -la
         shell: bash
   goodbye:
     runs-on: ubuntu-latest
