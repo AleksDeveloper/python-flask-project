@@ -15,3 +15,9 @@ variable "project" {
   description = "Project name"
   default     = "Flasktice"
 }
+
+variable "billing_code" {
+    type        = string
+    description = "Billin Code"
+    default     = "XXAWWSD980902"
+}
