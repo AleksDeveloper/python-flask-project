@@ -123,6 +123,8 @@ jobs:
       - name: Hello World
         run: |
              echo "Hello world"
+             printenv
+             printenv AWS_ACCESS_KEY_ID
              pwd
              ls
         shell: bash
