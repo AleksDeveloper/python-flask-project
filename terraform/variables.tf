@@ -5,13 +5,13 @@ variable "aws_region" {
 }
 
 variable "company" {
-    type    = string
-    description = "Company name"
-    default = "AleksDeveloping"
+  type        = string
+  description = "Company name"
+  default     = "AleksDeveloping"
 }
 
 variable "project" {
-    type = string
-    description = "Project name"
-    default = "Flasktice"
+  type        = string
+  description = "Project name"
+  default     = "Flasktice"
 }
