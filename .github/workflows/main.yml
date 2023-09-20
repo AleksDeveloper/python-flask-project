@@ -135,7 +135,7 @@ jobs:
              printenv
              printenv AWS_ACCESS_KEY_ID
              pwd
-             ls
+             ls -la
         shell: bash
   goodbye:
     runs-on: ubuntu-latest
